@@ -1,4 +1,4 @@
-# Magic Container
+# Magic Container 🦄
 
 Type safe dependency injection container for your next Typescript/Javascript application!
 

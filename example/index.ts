@@ -1,6 +1,5 @@
-import { container } from "../src";
+import { magicContainer, DerivedValue, DynamicFunction } from "../src";
 import { TAppConfig, getConfig } from "./config";
-import { DerivedValue, DynamicFunction } from "../src/wrappers";
 
 export interface IAppContainer {
   env: NodeJS.ProcessEnv;
@@ -9,7 +8,7 @@ export interface IAppContainer {
 }
 
 export function getContainer(): IAppContainer {
-  return container({
+  return magicContainer({
     env: process.env,
     config: new DerivedValue(getConfig),
     log: new DynamicFunction((_, ctx) => (msg: any) => {

@@ -1,4 +1,3 @@
-import { Entity } from "./container";
 import { isString } from "lodash";
 import { TDictionary, ResolveContainer, IResolutionCtx } from "./types";
 import { TypeSafeDiWrapper } from "./wrappers";
@@ -27,7 +26,7 @@ export class DependencyTrackingProxy<TContainer> {
 
 const RESOLVE_DEPTH_LIMIT = 20;
 
-export class ContainerProxy<T extends TDictionary<Entity<TypeSafeDiWrapper<any>>>> {
+export class ContainerProxy<T extends TDictionary<TypeSafeDiWrapper<any>>> {
   public readonly proxy: ResolveContainer<T>;
 
   constructor(private readonly entities: T) {
@@ -56,7 +55,7 @@ export class ContainerProxy<T extends TDictionary<Entity<TypeSafeDiWrapper<any>>
     }
 
     if (entity.dependencies.length === 0) {
-      return this.resolveValue(entity.value, undefined, ctx);
+      return entity.apply(undefined, ctx);
     }
 
     const resolvedDeps = entity.dependencies.map(dependencyName => ({
@@ -69,10 +68,6 @@ export class ContainerProxy<T extends TDictionary<Entity<TypeSafeDiWrapper<any>>
       {},
     );
 
-    return this.resolveValue(entity.value, miniContainer, ctx);
-  }
-
-  private resolveValue(value: TypeSafeDiWrapper<T>, container: any, ctx: IResolutionCtx): T {
-    return value.apply(container, ctx);
+    return entity.apply(miniContainer, ctx);
   }
 }
