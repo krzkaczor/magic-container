@@ -1,8 +1,7 @@
-import { mapValues } from "lodash";
-import { isFunction, negate } from "lodash/fp";
 import { TypeSafeDiWrapper, ConstantValue, Funktion } from "./wrappers";
 import { ResolveContainer } from "./types";
-import { DependencyTrackingProxy, ContainerProxy } from "./proxies";
+import { DependencyTrackingProxy, ContainerProxy } from "./proxies.private";
+import { TDictionary } from "./types.private";
 
 export function magicContainer<T>(containerConfig: T): ResolveContainer<T> {
   const configWithDependencies = mapValues(containerConfig, value => {
@@ -24,5 +23,11 @@ export function magicContainer<T>(containerConfig: T): ResolveContainer<T> {
   return containerProxy.proxy as any;
 }
 
-const isConstant = (v: any) => negate(isFunction)(v) && !isWrapped(v);
+const isConstant = (v: any) => typeof v !== "function" && !isWrapped(v);
 const isWrapped = (v: any): v is TypeSafeDiWrapper<any> => v instanceof TypeSafeDiWrapper;
+
+function mapValues(v: TDictionary<any>, func: (v: any) => any): TDictionary<any> {
+  const newValues = Object.keys(v).map(k => ({ key: k, val: func(v[k]) }));
+
+  return newValues.reduce<TDictionary<any>>((acc, cur) => ({ ...acc, [cur.key]: cur.val }), {});
+}

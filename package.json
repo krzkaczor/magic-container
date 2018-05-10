@@ -1,7 +1,8 @@
 {
   "name": "magic-container",
-  "version": "0.0.1",
-  "main": "src/index.ts",
+  "version": "0.0.3",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "license": "MIT",
   "scripts": {
     "start": "ts-node ./src/index.ts",
@@ -14,7 +15,9 @@
     "lint:fix": "yarn format:fix && yarn tslint:fix && yarn tsc",
     "test:mocha": "NODE_ENV=test mocha --require ts-node/register --require ./test/setup.ts '**/*.spec.ts'",
     "test": "yarn lint && yarn test:mocha",
-    "test:fix": "yarn lint:fix && yarn test:mocha"
+    "test:fix": "yarn lint:fix && yarn test:mocha",
+    "build": "rm -rf ./lib && tsc -p ./tsconfig.prod.json --declaration && rm ./lib/*.private.d.ts",
+    "prepublishOnly": "yarn test && yarn build"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
@@ -34,7 +37,5 @@
     "typescript": "^2.8.1",
     "typestrict": "^0.0.8"
   },
-  "dependencies": {
-    "lodash": "^4.17.10"
-  }
+  "dependencies": {}
 }

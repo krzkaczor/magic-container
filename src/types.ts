@@ -1,9 +1,5 @@
 import { DerivedValue, DynamicFunction, Clazz } from "./wrappers";
 
-export type TDictionary<V> = {
-  [k: string]: V | undefined;
-};
-
 export interface IResolutionCtx {
   depth: number;
   path: string[];
