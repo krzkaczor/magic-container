@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
 
-import { container, IResolutionCtx, DerivedValue, DynamicFunction, Clazz } from "../src/index";
+import { magicContainer, IResolutionCtx, DerivedValue, DynamicFunction, Clazz } from "../src/index";
 
 describe("magic-container", () => {
   it("should work", () => {
@@ -32,7 +32,7 @@ describe("magic-container", () => {
     const loggerSpy = spy((_s: string) => undefined);
     const logger = (_c: any, ctx: IResolutionCtx) => (message: string) => loggerSpy(`${ctx.path[1]}: ${message}`);
 
-    const c: IContainer = container({
+    const c: IContainer = magicContainer({
       constantValue,
       derivedValue: new DerivedValue(derivedValueCalc),
       function: fn,
@@ -54,7 +54,7 @@ describe("magic-container", () => {
       functionB: () => void;
     }
 
-    const c: IContainer = container({
+    const c: IContainer = magicContainer({
       functionA: ({ functionB: _functionB }: IContainer) => () => {},
       functionB: ({ functionA: _functionA }: IContainer) => () => {},
     });
