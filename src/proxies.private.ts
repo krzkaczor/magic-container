@@ -1,6 +1,6 @@
-import { isString } from "lodash";
-import { TDictionary, ResolveContainer, IResolutionCtx } from "./types";
+import { ResolveContainer, IResolutionCtx } from "./types";
 import { TypeSafeDiWrapper } from "./wrappers";
+import { TDictionary } from "./types.private";
 
 export class DependencyTrackingProxy<TContainer> {
   public readonly proxy: TContainer;
@@ -11,7 +11,7 @@ export class DependencyTrackingProxy<TContainer> {
       {},
       {
         get: (_target, name) => {
-          if (!isString(name)) {
+          if (typeof name !== "string") {
             throw new Error("Only strings are accepted as keys inside container");
           }
 
@@ -34,7 +34,7 @@ export class ContainerProxy<T extends TDictionary<TypeSafeDiWrapper<any>>> {
       {},
       {
         get: (_target, name) => {
-          if (!isString(name)) {
+          if (typeof name !== "string") {
             throw new Error("Only strings are accepted as keys inside container");
           }
 
