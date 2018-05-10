@@ -1,4 +1,5 @@
 .circleci
+.vscode
 example
 src
 test
